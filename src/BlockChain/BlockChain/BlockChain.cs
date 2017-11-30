@@ -3,10 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlockChain.Model;
 
 namespace BlockChain
 {
     public class BlockChain
     {
+        private static BlockChain instance;
+        public static BlockChain Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BlockChain();
+                }
+
+                return instance;
+            }
+        }
+
+        private byte[] chain;
+        private byte[] current_transactions;
+
+        public Block NewBlock()
+        {
+            return new Block();
+        }
     }
 }
