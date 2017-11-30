@@ -28,7 +28,22 @@ namespace BlockChain
 
         public Block NewBlock()
         {
-            return new Block();
+            return null;
+        }
+
+        public Transaction NewTransaction()
+        {
+            return null;
+        }
+
+        public byte[] GetHash()
+        {
+            return null;
+        }
+
+        public Block GetLastBlock()
+        {
+            return null;
         }
     }
 }
