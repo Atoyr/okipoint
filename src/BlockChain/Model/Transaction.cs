@@ -13,16 +13,17 @@ namespace BlockChain.Model
         public byte[] Recipient { get; set; }
         public int Amount { get; set; }
         //public object Data { get; set; }
+        public byte[] DigitalSignature { set; get; }
+        public byte[] PublicKey { set; get; }
+
 
         public byte[] ToBytes()
         {
-            var sha256 = new SHA256Managed();
             var bytes = new List<byte>();
             bytes.AddRange(Sender);
             bytes.AddRange(Recipient);
             bytes.AddRange(BitConverter.GetBytes(Amount));
-            //if(Data != null)bytes.AddRange(BitConverter.GetBytes(Data.GetHashCode()));
-            return sha256.ComputeHash(bytes.ToArray());
+            return Util.Hash.GetHash<SHA256Managed>(bytes.ToArray(), null); 
         }
     }
 }
