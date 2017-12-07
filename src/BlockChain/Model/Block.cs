@@ -9,32 +9,47 @@ namespace BlockChain.Model
 {
     public class Block
     {
+        /// <summary>
+        /// Blockのインデックス
+        /// </summary>
         public int Index { get; set; }
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        /// <summary>
+        /// ブロック生成日時
+        /// </summary>
         public DateTime Timestamp { get; set; }
-        public int Difficult { set; get; }
+        /// <summary>
+        /// トランザクションデータ
+        /// </summary>
         public List<Transaction> Transactions { get; set; }
-        public byte[] DigitalSignature { set; get; }
-        public byte[] PublicKey { set; get; }
-        public int Nonce { get; }
-        public int Proof { get; set; }
+        /// <summary>
+        /// 前ブロック ハッシュ値
+        /// </summary>
         public byte[] PreviousHash { get; set; }
-        public byte[] Hash
-        {
-            get
-            {
-                var sha256 = new SHA256Managed();
-                var bytes = new List<byte>();
-                bytes.AddRange(PreviousHash);
-                bytes.AddRange(Id.ToByteArray());
-                bytes.AddRange(BitConverter.GetBytes(Timestamp.ToUniversalTime().ToBinary()));
-                foreach (Transaction t in Transactions)
-                {
-                    bytes.AddRange(t.ToBytes());
-                }
-                return sha256.ComputeHash(bytes.ToArray());
-            }
-        }
+        /// <summary>
+        /// ナンス
+        /// </summary>
+        public int Nonce { get; }
+        /// <summary>
+        /// 計算難易度
+        /// 計算したHash値の前{Difficult}桁が0になるよう計算する
+        /// </summary>
+        public int Difficult { set; get; }
+        //public int Proof { get; set; }
+        //public byte[] Hash
+        //{
+        //    get
+        //    {
+        //        var sha256 = new SHA256Managed();
+        //        var bytes = new List<byte>();
+        //        bytes.AddRange(PreviousHash);
+        //        //bytes.AddRange(BitConverter.GetBytes(Timestamp.ToUniversalTime().ToBinary()));
+        //        foreach (Transaction t in Transactions)
+        //        {
+        //            bytes.AddRange(t.ToBytes());
+        //        }
+        //        return sha256.ComputeHash(bytes.ToArray());
+        //    }
+        //}
 
         public override string ToString()
         {

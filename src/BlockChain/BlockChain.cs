@@ -88,30 +88,29 @@ namespace BlockChain
             return _chain.Last();
         }
 
-        private Block CreateNewBlock(int proof, byte[] previousHash = null)
-        {
-            var block = new Block
-            {
-                Index = _chain.Count,
-                Timestamp = DateTime.UtcNow,
-                Transactions = _currentTransactions.ToList(),
-                Proof = proof,
-                PreviousHash = previousHash ?? GetHash(_chain.Last())
-            };
+        //private Block CreateNewBlock(int proof, byte[] previousHash = null)
+        //{
+        //    var block = new Block
+        //    {
+        //        Index = _chain.Count,
+        //        Timestamp = DateTime.UtcNow,
+        //        Transactions = _currentTransactions.ToList(),
+        //        PreviousHash = previousHash ?? GetHash(_chain.Last())
+        //    };
 
-            _currentTransactions.Clear();
-            _chain.Add(block);
-            return block;
-        }
+        //    _currentTransactions.Clear();
+        //    _chain.Add(block);
+        //    return block;
+        //}
 
-        private int CreateProofOfWork(int lastProof, string previousHash)
-        {
-            int proof = 0;
-            //while (!IsValidProof(lastProof, proof, previousHash))
-            //    proof++;
+        //private int CreateProofOfWork(int lastProof, string previousHash)
+        //{
+        //    int proof = 0;
+        //    //while (!IsValidProof(lastProof, proof, previousHash))
+        //    //    proof++;
 
-            return proof;
-        }
+        //    return proof;
+        //}
 
         private bool IsValidProof(int lastProof, int proof, byte[] previousHash)
         {
@@ -120,6 +119,43 @@ namespace BlockChain
             //return result.StartsWith("0000");
             return false;
         }
+
+        #region static method
+
+        public static byte[] GetHash(Block block)
+        {
+            return GetHash(block.PreviousHash,block.Timestamp,block.Transactions,block.Nonce);
+        }
+
+        public static byte[] GetHash(byte[] PreviousHash,DateTime Timestamp,List<Transaction> Transactions,int Nonce)
+        {
+            var bytes = new List<byte>();
+            bytes.AddRange(PreviousHash);
+            bytes.AddRange(BitConverter.GetBytes(Timestamp.ToUniversalTime().ToBinary()));
+            foreach (Transaction t in Transactions)
+            {
+                bytes.AddRange(t.ToBytes());
+            }
+            bytes.AddRange(BitConverter.GetBytes(Nonce));
+            return Util.Hash.GetHash<SHA256Managed>(bytes.ToArray());
+        }
+
+        public static Block CreateNewBlock(int proof, byte[] previousHash = null)
+        {
+
+            //var block = new Block
+            //{
+            //    Index = _chain.Count,
+            //    Timestamp = DateTime.UtcNow,
+            //    Transactions = _currentTransactions.ToList(),
+            //    PreviousHash = previousHash ?? GetHash(_chain.Last())
+            //};
+
+            _currentTransactions.Clear();
+            _chain.Add(block);
+            return block;
+        }
+        #endregion
 
         ////web server calls
         //internal string Mine()
