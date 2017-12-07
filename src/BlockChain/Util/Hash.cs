@@ -18,7 +18,7 @@ namespace BlockChain.Util
         /// <param name="target">ハッシュ変換元</param>
         /// <param name="hashAlgorithm">ハッシュアルゴリズム Nullの場合、Tの既定ハッシュアルゴリズムを使用</param>
         /// <returns></returns>
-        public static byte[] GetHash<T>(byte[] target,T hashAlgorithm) where T : HashAlgorithm, new()
+        public static byte[] GetHash<T>(byte[] target,T hashAlgorithm = null) where T : HashAlgorithm, new()
         {
             if (hashAlgorithm == null)
             {
