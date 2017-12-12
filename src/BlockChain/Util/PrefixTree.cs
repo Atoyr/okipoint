@@ -1,4 +1,5 @@
-﻿using BlockChain.Model;
+﻿using BlockChain.Interface;
+using BlockChain.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,28 +9,28 @@ using System.Threading.Tasks;
 
 namespace BlockChain.Util
 {
-    public class PrefixTree<String,V> : IDictionary<String,V>
+    public class PrefixTree<K ,V> : IDictionary<K ,V>
     {
         private PrefixTreeNode<V> _parentTreeNode = new PrefixTreeNode<V>();
 
-        public V this[String key]
+        public V this[K key]
         {
             set => Add(key, value);
             get
             {
-                var b = GetStringAsciiBytes(key.ToString());
+                var b = ConvertKeyToBytes(key);
                 var node = _parentTreeNode;
 
                 foreach (Nibble n in Nibble.GetList(b))
                 {
-                    node = node.Children[n.Value];
+                    node = (PrefixTreeNode<V>)node.Children[n.Value];
                     if (node == null) return default(V);
                 }
                 return node.Value;
             }
         }
 
-        public ICollection<String> Keys => throw new NotImplementedException();
+        public ICollection<K> Keys => throw new NotImplementedException();
 
         public ICollection<V> Values => throw new NotImplementedException();
 
@@ -37,76 +38,124 @@ namespace BlockChain.Util
 
         public bool IsReadOnly => throw new NotImplementedException();
 
-        public void Add(String key, V value)
+        public void Add(K key, V value)
         {
-            var b = GetStringAsciiBytes(key.ToString());
+            var b = ConvertKeyToBytes(key);
             var node = _parentTreeNode;
 
             foreach(Nibble n in Nibble.GetList(b))
             {
-                node = node.AddChild(n.Value);
+                node.AddChild(n.Value);
             }
             node.Value = value;
         }
 
-        public void Add(KeyValuePair<String, V> item) => Add(item.Key, item.Value);
+        public void Add(KeyValuePair<K, V> item) => Add(item.Key, item.Value);
 
         public void Clear() => _parentTreeNode.ClearChildren();
 
 
-        public bool Contains(KeyValuePair<String, V> item)
+        public bool Contains(KeyValuePair<K, V> item)
         {
             var value = this[item.Key];
             return value != null && value.Equals(item.Value);
         }
 
-        public bool ContainsKey(String key)
+        public bool ContainsKey(K key)
         {
             return this[key] != null; 
         }
 
-        public void CopyTo(KeyValuePair<String, V>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         private List<V> GetList()
         {
+            return GetList(_parentTreeNode);
+        }
+
+        private List<V> GetList(ITreeNode<V> node)
+        {
+            return GetList(node.Children);
+        }
+
+        private List<V> GetList(ITreeNode<V>[] nodes)
+        {
             var list = new List<V>();
-
-
-
+            foreach (ITreeNode<V> node in nodes)
+            {
+                if (node != null)
+                {
+                    if (node.Value != null) list.Add(node.Value);
+                    list.AddRange(GetList(node.Children));
+                }
+            }
             return list;
         }
 
-
-        public IEnumerator<KeyValuePair<String, V>> GetEnumerator()
+        private KeyValuePair<K, V> GetKeyValue(Nibble[] nibbles,ITreeNode<V> node)
         {
-
-            throw new NotImplementedException();
+            var key = ConvertBytesToKey(Nibble.ConvertNibblesToBytes(nibbles));
+            return new KeyValuePair<K, V>(key, node.Value);
         }
 
-        public bool Remove(String key)
+        public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator(new List<Nibble>(), _parentTreeNode);
         }
 
-        public bool Remove(KeyValuePair<String, V> item)
+        public IEnumerator<KeyValuePair<K, V>> GetEnumerator(List<Nibble> nibble,ITreeNode<V> baseNode)
         {
-            throw new NotImplementedException();
+            if (baseNode.Value != null)
+            {
+                yield return GetKeyValue(nibble.ToArray(), baseNode);
+            }
+            for (int i = 0; i < PrefixTreeNode<V>.ARRAY_LENGTH; i++)
+            {
+                if (_parentTreeNode.Children[i] is ITreeNode<V> node)
+                {
+                    nibble.Add(new Nibble(i));
+                    foreach(var kv in GetEnumerator(new List<Nibble>(nibble), node) as PrefixTree<K,V>)
+                    {
+                        yield return kv;
+                    }
+                }
+            }
         }
 
-        public bool TryGetValue(String key, out V value)
+        public bool Remove(K key)
         {
-            throw new NotImplementedException();
+            var value = this[key];
+            if (value != null)
+            {
+                value = default(V);
+                return true;
+            }
+            return false;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public bool Remove(KeyValuePair<K, V> item)
         {
-            throw new NotImplementedException();
+            var value = this[item.Key];
+            if (value != null && value.Equals(item.Value))
+            {
+                value = default(V);
+                return true;
+            }
+            return false;
         }
 
-        private byte[] GetStringAsciiBytes(string str) => Encoding.ASCII.GetBytes(str);
+        public bool TryGetValue(K key, out V value)
+        {
+            value = this[key];
+            return value != null;
+        }
 
+        private byte[] ConvertKeyToBytes(K key) => Encoding.ASCII.GetBytes(key.ToString());
+        private K ConvertBytesToKey(byte[] bytes) => (K)Convert.ChangeType(Encoding.ASCII.GetString(bytes),typeof(K));
+
+        IEnumerator IEnumerable.GetEnumerator() => GetList().GetEnumerator();
     }
 }

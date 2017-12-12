@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace BlockChain.Interface
 {
-    public interface TreeNode<T> 
+    public interface ITreeNode<T> 
     {
-        TreeNode<T> Parent { get; }
-        TreeNode<T>[] Children { get; }
+        ITreeNode<T> Parent { get; }
+        ITreeNode<T>[] Children { get; }
         T Value { set; get; }
 
-        T AddChild(BitArray key,T child);
-        T RemoveChild(BitArray key);
+        ITreeNode<T> AddChild(int i);
+        T AddChild(int i,T child);
+        T RemoveChild(int i);
         T RemoveChild(T child);
-        bool TryRemoveChild(BitArray key);
+        bool TryRemoveChild(int i);
         bool TryRemoveChild(T key);
-        T ClearChildren();
+        void ClearChildren();
         bool TryRemoveOwn();
         T RemoveOwn();
     }

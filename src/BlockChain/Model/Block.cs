@@ -53,7 +53,8 @@ namespace BlockChain.Model
 
         public override string ToString()
         {
-            return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Proof: {Proof} | Hash: {System.Text.Encoding.ASCII.GetString(Hash)} | PrevHash: {System.Text.Encoding.ASCII.GetString(PreviousHash)} | Trx: {Transactions.Count}";
+            return string.Empty;
+            //return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Proof: {Proof} | Hash: {System.Text.Encoding.ASCII.GetString(Hash)} | PrevHash: {System.Text.Encoding.ASCII.GetString(PreviousHash)} | Trx: {Transactions.Count}";
         }
     }
 }

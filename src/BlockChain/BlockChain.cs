@@ -63,9 +63,9 @@ namespace BlockChain
                 Debug.WriteLine("----------------------------");
 
                 //Check that the hash of the block is correct
-                if (block.PreviousHash != lastBlock.Hash) return false;
-                //Check that the Proof of Work is correct
-                if (!IsValidProof(lastBlock.Proof, block.Proof, lastBlock.PreviousHash)) return false;
+                //if (block.PreviousHash != lastBlock.Hash) return false;
+                ////Check that the Proof of Work is correct
+                //if (!IsValidProof(lastBlock.Proof, block.Proof, lastBlock.PreviousHash)) return false;
 
                 lastBlock = block;
                 currentIndex++;
@@ -142,7 +142,7 @@ namespace BlockChain
 
         public static Block CreateNewBlock(int proof, byte[] previousHash = null)
         {
-
+            return new Block();
             //var block = new Block
             //{
             //    Index = _chain.Count,
@@ -151,9 +151,9 @@ namespace BlockChain
             //    PreviousHash = previousHash ?? GetHash(_chain.Last())
             //};
 
-            _currentTransactions.Clear();
-            _chain.Add(block);
-            return block;
+            //_currentTransactions.Clear();
+            //_chain.Add(block);
+            //return block;
         }
         #endregion
 

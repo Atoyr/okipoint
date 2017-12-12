@@ -28,6 +28,11 @@ namespace BlockChain.Model
             Value = 0;
         }
 
+        public Nibble(int value)
+        {
+            Value = value;
+        }
+
         public Nibble(byte b ,bool isFront)
         {
             SetValue(b, isFront);
@@ -52,6 +57,20 @@ namespace BlockChain.Model
             }
             return list;
         }
+
+        public static byte[] ConvertNibblesToBytes(params Nibble[] nibbles)
+        {
+            if(nibbles.Length % 2 != 0) return new byte[0];
+            var bytes = new List<byte>(nibbles.Length / 2);
+
+            for(int i = 0;i < nibbles.Length; i = i + 2)
+            {
+                int value = nibbles[i].Value * 16 + nibbles[i + 1].Value;
+                bytes.Add(BitConverter.GetBytes(value)[0]);
+            }
+            return bytes.ToArray();
+        }
+
 
         private int ConvertNibbleValue(bool b0, bool b1, bool b2, bool b3)
         { 

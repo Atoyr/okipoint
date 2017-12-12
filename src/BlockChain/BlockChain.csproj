@@ -49,8 +49,10 @@
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Model\Wallet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\PatriciaTreeNode.cs" />
     <Compile Include="Util\ElectronicSignature.cs" />
     <Compile Include="Util\Hash.cs" />
+    <Compile Include="Util\PatriciaTree.cs" />
     <Compile Include="Util\PrefixTree.cs" />
     <Compile Include="Util\PrefixTreeNode.cs" />
   </ItemGroup>
