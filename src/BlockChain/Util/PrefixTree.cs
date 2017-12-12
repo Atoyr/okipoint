@@ -45,7 +45,7 @@ namespace BlockChain.Util
 
             foreach(Nibble n in Nibble.GetList(b))
             {
-                node.AddChild(n.Value);
+                node = (PrefixTreeNode<V>)node.AddChild(n.Value);
             }
             node.Value = value;
         }
