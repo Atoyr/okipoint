@@ -19,7 +19,10 @@ namespace BlockChain.Model
                 {
                     this.value = value;
                 }
-                this.value = 0;
+                else
+                {
+                    this.value = 0;
+                }
             }
         }
 

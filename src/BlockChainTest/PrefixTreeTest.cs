@@ -26,6 +26,10 @@ namespace BlockChainTest
             {
                 prefixTree.Add(kv.Key, kv.Value);
                 System.Diagnostics.Trace.WriteLine($"{kv.Key},{kv.Value} ; {kv.Key},{prefixTree[kv.Key]}");
+                foreach(KeyValuePair<string, int> pkv in prefixTree)
+                {
+                    System.Diagnostics.Trace.WriteLine($"{pkv.Key},{pkv.Value}");
+                }
             }
 
             foreach (KeyValuePair<string, int> kv in dic)

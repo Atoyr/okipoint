@@ -43,9 +43,9 @@ namespace BlockChain.Util
             var b = ConvertKeyToBytes(key);
             var node = _parentTreeNode;
 
-            foreach(Nibble n in Nibble.GetList(b))
+            foreach (Nibble n in Nibble.GetList(b))
             {
-                node = (PrefixTreeNode<V>)node.AddChild(n.Value);
+                node = node.Children[n.Value] == null ? (PrefixTreeNode<V>)node.AddChild(n.Value) : (PrefixTreeNode<V>)node.Children[n.Value];
             }
             node.Value = value;
         }
@@ -117,10 +117,17 @@ namespace BlockChain.Util
                 if (_parentTreeNode.Children[i] is ITreeNode<V> node)
                 {
                     nibble.Add(new Nibble(i));
-                    foreach(var kv in GetEnumerator(new List<Nibble>(nibble), node) as PrefixTree<K,V>)
+                    if (GetEnumerator(new List<Nibble>(nibble), node) is PrefixTree<K, V> enumerator)
                     {
-                        yield return kv;
+                        foreach (var kv in enumerator)
+                        {
+                            yield return kv;
+                        }
                     }
+                    //else
+                    //{
+                    //    yield break;
+                    //}
                 }
             }
         }
