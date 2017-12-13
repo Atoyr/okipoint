@@ -124,10 +124,6 @@ namespace BlockChain.Util
                             yield return kv;
                         }
                     }
-                    //else
-                    //{
-                    //    yield break;
-                    //}
                 }
             }
         }
