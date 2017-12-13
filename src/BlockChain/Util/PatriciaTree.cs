@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlockChain
+namespace BlockChain.Util
 {
-    public class BlockChain
-    {
-    }
+    //public class PatriciaTree<String ,V> : PrefixTree<String ,V>
+    //{
+
+    //}
 }
