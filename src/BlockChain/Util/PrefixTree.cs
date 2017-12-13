@@ -106,15 +106,16 @@ namespace BlockChain.Util
             return GetEnumerator(new List<Nibble>(), _parentTreeNode);
         }
 
+        // TODO バグってるので修正
         public IEnumerator<KeyValuePair<K, V>> GetEnumerator(List<Nibble> nibble,ITreeNode<V> baseNode)
         {
-            if (baseNode.Value != null)
+            if ((baseNode as PrefixTreeNode<V>).HaveValue)
             {
                 yield return GetKeyValue(nibble.ToArray(), baseNode);
             }
             for (int i = 0; i < PrefixTreeNode<V>.ARRAY_LENGTH; i++)
             {
-                if (_parentTreeNode.Children[i] is ITreeNode<V> node)
+                if (baseNode.Children[i] is ITreeNode<V> node)
                 {
                     nibble.Add(new Nibble(i));
                     if (GetEnumerator(new List<Nibble>(nibble), node) is PrefixTree<K, V> enumerator)

@@ -19,7 +19,18 @@ namespace BlockChain.Util
 
         public ITreeNode<T>[] Children { get; protected set; }
 
-        public T Value { get; set; }
+        public bool HaveValue = false;
+
+        private T value;
+        public T Value
+        {
+            get => value;
+            set
+            {
+                this.value = value;
+                HaveValue = true;
+            }
+        }
 
         public ITreeNode<T> AddChild(int i)
         {
