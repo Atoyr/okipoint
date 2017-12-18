@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlockChain.Model
+namespace Blockchain.Api.Models
 {
     public class Node
     {

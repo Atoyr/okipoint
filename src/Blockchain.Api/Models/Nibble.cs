@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlockChain.Model
+namespace Blockchain.Api.Models
 {
     public class Nibble
     {

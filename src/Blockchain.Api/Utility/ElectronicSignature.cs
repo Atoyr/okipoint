@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlockChain.Util
+namespace Blockchain.Api.Utility
 {
     public static class ElectronicSignature
     {

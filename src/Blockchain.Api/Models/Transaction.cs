@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Blockchain.Api.Utility;
 
-
-namespace BlockChain.Model
+namespace Blockchain.Api.Models
 {
     public class Transaction
     {
@@ -33,7 +33,7 @@ namespace BlockChain.Model
             bytes.AddRange(Sender);
             bytes.AddRange(Recipient);
             bytes.AddRange(BitConverter.GetBytes(Amount));
-            return Util.Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
+            return Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
         }
     }
 }

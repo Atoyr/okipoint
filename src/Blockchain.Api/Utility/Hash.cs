@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlockChain.Util
+namespace Blockchain.Api.Utility
 {
     public class Hash
     {
