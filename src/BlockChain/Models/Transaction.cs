@@ -9,7 +9,6 @@ namespace BlockChain.Model
 {
     public class Transaction
     {
-
         public int Version { get; private set; }
         public byte[] Sender { get; set; }
         public byte[] Recipient { get; set; }

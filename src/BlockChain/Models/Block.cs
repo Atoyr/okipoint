@@ -10,9 +10,14 @@ namespace BlockChain.Model
     public class Block
     {
         /// <summary>
+        /// This Block Version
+        /// </summary>
+        public int Version { get; private set; }
+
+        /// <summary>
         /// Blockのインデックス
         /// </summary>
-        public int Index { get; set; }
+        public long Index { get; set; }
         /// <summary>
         /// ブロック生成日時
         /// </summary>
@@ -24,7 +29,7 @@ namespace BlockChain.Model
         /// <summary>
         /// 前ブロック ハッシュ値
         /// </summary>
-        public byte[] PreviousHash { get; set; }
+        public string PreviousHash { get; set; }
         /// <summary>
         /// ナンス
         /// </summary>
@@ -34,27 +39,15 @@ namespace BlockChain.Model
         /// 計算したHash値の前{Difficult}桁が0になるよう計算する
         /// </summary>
         public int Difficult { set; get; }
-        //public int Proof { get; set; }
-        //public byte[] Hash
-        //{
-        //    get
-        //    {
-        //        var sha256 = new SHA256Managed();
-        //        var bytes = new List<byte>();
-        //        bytes.AddRange(PreviousHash);
-        //        //bytes.AddRange(BitConverter.GetBytes(Timestamp.ToUniversalTime().ToBinary()));
-        //        foreach (Transaction t in Transactions)
-        //        {
-        //            bytes.AddRange(t.ToBytes());
-        //        }
-        //        return sha256.ComputeHash(bytes.ToArray());
-        //    }
-        //}
 
         public override string ToString()
         {
-            return string.Empty;
-            //return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Proof: {Proof} | Hash: {System.Text.Encoding.ASCII.GetString(Hash)} | PrevHash: {System.Text.Encoding.ASCII.GetString(PreviousHash)} | Trx: {Transactions.Count}";
+            return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Difficult: {Difficult} | PrevHash: {System.Text.Encoding.ASCII.GetString(PreviousHash)} | Trx: {Transactions.Count}";
+        }
+
+        public static Block Deserialize(string blockJson)
+        {
+
         }
     }
 }

@@ -13,14 +13,39 @@ namespace BlockChain
     //public static const int HASH_SIZE = 256;
     public class BlockChain
     {
-        private List<Transaction> _currentTransactions = new List<Transaction>();
+        #region Private Variable Property
+        /// <summary>
+        /// Transaction the instance is pooling
+        /// Include this transaction when issuing blocks
+        /// </summary>
+        private List<Transaction> _transactionPool = new List<Transaction>();
+        /// <summary>
+        /// Blocks chain this instance has
+        /// </summary>
         private List<Block> _chain = new List<Block>();
+        /// <summary>
+        /// Other BlockChain Instance Nodes
+        /// </summary>
         private List<Node> _nodes = new List<Node>();
+        /// <summary>
+        /// Last of the BlockChain this instance has
+        /// </summary>
         private Block _lastBlock => _chain.Last();
+        /// <summary>
+        /// This private instance
+        /// </summary>
         private static BlockChain _instance;
+        #endregion
 
+        #region Public Variable Property
+        /// <summary>
+        /// This BlockChain Instance Id
+        /// </summary>
         public string NodeId { get; private set; }
 
+        /// <summary>
+        /// BlockChain singleton Instance
+        /// </summary>
         public static BlockChain Instance
         {
             get
@@ -33,23 +58,32 @@ namespace BlockChain
             }
         }
 
+        #endregion
+
+        #region Constractor
         public BlockChain()
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             // TODO : Genesis Block 
             CreateNewBlock(proof: 100, previousHash: null); //genesis block
         }
+        #endregion
 
+        #region private method
+        /// <summary>
+        /// Regist new node
+        /// </summary>
+        /// <param name="address">Regist node address</param>
         private void RegisterNode(string address)
         {
             _nodes.Add(new Node { Address = new Uri(address) });
         }
 
         /// <summary>
-        /// Chainの整合性を確認
+        /// Confirm chains integrity
         /// </summary>
-        /// <param name="chain"></param>
-        /// <returns></returns>
+        /// <param name="chain">Confirm chains</param>
+        /// <returns>Confirm result</returns>
         private bool IsValidChain(List<Block> chain)
         {
             Block block = null;
@@ -73,15 +107,21 @@ namespace BlockChain
             return true;
         }
 
+        #endregion
+        /// <summary>
+        /// Create new transaction
+        /// </summary>
+        /// <returns></returns>
         public Transaction NewTransaction()
         {
             return null;
         }
 
-        public byte[] GetHash()
-        {
-            return null;
-        }
+        /// <summary>
+        /// Add transaction
+        /// </summary>
+        /// <param name="tran">Transaction</param>
+        public void AddTransaction(Transaction tran) => _transactionPool.Add(tran);
 
         public Block GetLastBlock()
         {
