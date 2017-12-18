@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Security.Cryptography.;
+using System.Security.Cryptography;
 
 
 namespace BlockChain.Model
@@ -33,7 +33,7 @@ namespace BlockChain.Model
             bytes.AddRange(Sender);
             bytes.AddRange(Recipient);
             bytes.AddRange(BitConverter.GetBytes(Amount));
-            return Util.Hash.GetHash<SHA256Managed>(bytes.ToArray()); 
+            return Util.Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
         }
     }
 }
