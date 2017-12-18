@@ -42,7 +42,7 @@ namespace BlockChain.Model
 
         public override string ToString()
         {
-            return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Difficult: {Difficult} | PrevHash: {System.Text.Encoding.ASCII.GetString(PreviousHash)} | Trx: {Transactions.Count}";
+            return $"{Index} [{Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}] Difficult: {Difficult} | PrevHash: {PreviousHash} | Trx: {Transactions.Count}";
         }
 
         //public static Block Deserialize(string blockJson)
