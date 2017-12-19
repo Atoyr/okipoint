@@ -9,13 +9,18 @@ namespace Blockchain.Api.Models
     {
         private readonly decimal _value;
 
-        public decimal Value { get; private set; }
+        public Coin(decimal value) => _value = value;
 
-        public static Coin operator +()
+        public decimal Value { get => _value;}
 
-        public bool Equals(Coin other)
-        {
-            throw new NotImplementedException();
-        }
+        public static Coin operator +(Coin x, Coin y) => new Coin(x.Value + y.Value);
+        public static Coin operator -(Coin x, Coin y) => new Coin(x.Value - y.Value);
+        public static Coin operator *(Coin x, Coin y) => new Coin(x.Value * y.Value);
+        public static Coin operator /(Coin x, Coin y) => new Coin(x.Value / y.Value);
+
+        public bool Equals(Coin other) => this._value == other._value;
+        public override bool Equals(object other) => (other is Coin coin) ? this._value == coin._value : false;
+        public override int GetHashCode() => _value.GetHashCode();
+        public override string ToString() => _value.ToString();
     }
 }
