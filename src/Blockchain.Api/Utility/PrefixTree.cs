@@ -1,5 +1,5 @@
 ﻿using BlockChain.Interface;
-using BlockChain.Model;
+using Blockchain.Api.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;

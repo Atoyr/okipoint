@@ -11,6 +11,8 @@ namespace Blockchain.Api.Models
 
         public decimal Value { get; private set; }
 
+        public static Coin operator +()
+
         public bool Equals(Coin other)
         {
             throw new NotImplementedException();
