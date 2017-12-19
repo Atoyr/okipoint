@@ -9,7 +9,7 @@ namespace Blockchain.Api.Models
     {
         private readonly decimal _value;
 
-        public decimal Vslue { get; private set; }
+        public decimal Value { get; private set; }
 
         public bool Equals(Coin other)
         {
