@@ -10,15 +10,24 @@ namespace Blockchain.Api.Models
     {
         private Output()
         {
-
         }
 
+        /// <summary>
+        /// Output virtual address
+        /// </summary>
         public string Address { get; private set; }
 
+        /// <summary>
+        /// Transaction index
+        /// </summary>
         public long TxIndex { get; private set; }
+
 
         public string Script { get; private set; }
 
+        /// <summary>
+        /// Do this transaction spent
+        /// </summary>
         public bool Spent { get; private set; }
     }
 }
