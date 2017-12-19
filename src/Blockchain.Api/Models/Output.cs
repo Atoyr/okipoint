@@ -8,9 +8,7 @@ namespace Blockchain.Api.Models
 {
     public class Output
     {
-        private Output()
-        {
-        }
+        private Output() { }
 
         /// <summary>
         /// Output virtual address
@@ -22,7 +20,7 @@ namespace Blockchain.Api.Models
         /// </summary>
         public long TxIndex { get; private set; }
 
-        public Coin Value { get; private set; }
+        public Coin Coin { get; private set; }
 
         public string Script { get; private set; }
 

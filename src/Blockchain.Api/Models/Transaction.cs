@@ -28,7 +28,7 @@ namespace Blockchain.Api.Models
 
             foreach(Input i in inputs)
             {
-                value += i.PreviousOutput.Value;
+                value += i.PreviousOutput.Coin;
                 throw new ArgumentException(nameof(inputs));
             }
 
