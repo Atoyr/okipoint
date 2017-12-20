@@ -21,5 +21,13 @@ namespace Blockchain.Api.Common
             bytes.AddRange(BitConverter.GetBytes(block.Nonce));
             return Encoding.ASCII.GetString(Hash.GetHash<SHA256Managed>(bytes.ToArray()));
         }
+
+        public static bool IsValidBlock(Block previousBlock,Block block)
+        {
+            var prevHash = GetHash(previousBlock);
+            if (block.PreviousHash != prevHash) return false;
+            return GetHash(block).StartsWith(new string('0', block.Difficult));
+        }
+
     }
 }
