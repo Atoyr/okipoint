@@ -20,7 +20,7 @@ namespace Blockchain.Api.Models
         /// </summary>
         public long TxIndex { get; private set; }
 
-        public Coin Coin { get; private set; }
+        public Coin Value { get; private set; }
 
         public string Script { get; private set; }
 

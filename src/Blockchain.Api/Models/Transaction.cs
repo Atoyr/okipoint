@@ -21,17 +21,18 @@ namespace Blockchain.Api.Models
             var tx = new Transaction();
             tx.Timestamp = DateTime.UtcNow;
 
-            // Input,Output検証
-            Coin value = 0;
-            string sender;
-            string recipient;
+            // Input,OutputのB/S検証
+            Coin value = Coin.Zero;
 
             foreach(Input i in inputs)
             {
-                value += i.PreviousOutput.Coin;
-                throw new ArgumentException(nameof(inputs));
+                if(i.PreviousOutput.)
+                value += i.PreviousOutput.Value;
             }
-
+            foreach (Output o in outputs)
+            {
+                value -= o.Value;
+            }
 
             return tx;
         }
