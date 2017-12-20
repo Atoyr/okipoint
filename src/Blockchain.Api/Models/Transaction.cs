@@ -18,13 +18,13 @@ namespace Blockchain.Api.Models
             if (inputs is null) throw new NullReferenceException(nameof(inputs));
             if (outputs is null) throw new NullReferenceException(nameof(outputs));
             Timestamp = DateTime.UtcNow;
-            TxID = Guid.NewGuid().ToString().Replace("-", "");
+            TxIndex = Guid.NewGuid().ToString().Replace("-", "");
             Inputs = new ReadOnlyCollection<Input>(inputs.ToList());
             Outputs = new ReadOnlyCollection<Output>(outputs.ToList());
         }
 
         public int Version { get; private set; }
-        public string TxID { get; private set; }
+        public string TxIndex { get; private set; }
         public string Sender { get; set; }
         public string Recipient { get; set; }
         public DateTime Timestamp { get; private set; }
