@@ -122,16 +122,19 @@ namespace Blockchain.Api.Common
 
         public static Block CreateNewBlock(int nonce, string previousHash = null)
         {
-            var block = new Block()
+            if (previousHash is null || BlockHelper.IsValidBlock(Instance._chain.Last(), previousHash, Instance._transactionPool, nonce, 4))
             {
-                Index = Instance._chain.Count,
-                Timestamp = DateTime.UtcNow,
-                Transactions = Instance._transactionPool.ToList(),
-                PreviousHash = previousHash ?? BlockHelper.GetHash(Instance._chain.Last())
-            };
-            Instance._transactionPool.Clear();
-            Instance._chain.Add(block);
-            return block;
+                var block = new Block(Instance._transactionPool)
+                {
+                    Index = Instance._chain.Count,
+                    Timestamp = DateTime.UtcNow,
+                    PreviousHash = previousHash ?? BlockHelper.GetHash(Instance._chain.Last())
+                };
+                Instance._transactionPool.Clear();
+                Instance._chain.Add(block);
+                return block;
+            }
+            return default(Block);
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Blockchain.Api.Models
 {
     public class Block
     {
+        public Block(IList<Transaction> txs) => Transactions = new ReadOnlyCollection<Transaction>(txs);
+
         /// <summary>
         /// This Block Version
         /// </summary>
@@ -25,7 +28,7 @@ namespace Blockchain.Api.Models
         /// <summary>
         /// トランザクションデータ
         /// </summary>
-        public List<Transaction> Transactions { get; set; }
+        public ReadOnlyCollection<Transaction> Transactions { get; private set; }
         /// <summary>
         /// 前ブロック ハッシュ値
         /// </summary>
