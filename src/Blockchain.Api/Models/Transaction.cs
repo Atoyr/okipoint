@@ -13,28 +13,13 @@ namespace Blockchain.Api.Models
     {
         private Transaction() { }
 
-        public static Transaction NewTransaction(ICollection<Input> inputs,ICollection<Output> outputs)
+        internal Transaction(ICollection<Input> inputs, ICollection<Output> outputs)
         {
             if (inputs is null) throw new NullReferenceException(nameof(inputs));
-            if(outputs is null) throw new NullReferenceException(nameof(outputs));
-
-            var tx = new Transaction();
-            tx.Timestamp = DateTime.UtcNow;
-
-            // Input,OutputのB/S検証
-            Coin value = Coin.Zero;
-
-            foreach(Input i in inputs)
-            {
-                if(i.PreviousOutput.)
-                value += i.PreviousOutput.Value;
-            }
-            foreach (Output o in outputs)
-            {
-                value -= o.Value;
-            }
-
-            return tx;
+            if (outputs is null) throw new NullReferenceException(nameof(outputs));
+            Timestamp = DateTime.UtcNow;
+            Inputs = new ReadOnlyCollection<Input>(inputs.ToList());
+            Outputs = new ReadOnlyCollection<Output>(outputs.ToList());
         }
 
         public int Version { get; private set; }
