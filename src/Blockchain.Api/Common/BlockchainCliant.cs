@@ -61,7 +61,7 @@ namespace Blockchain.Api.Common
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             // TODO : Genesis Block 
-            CreateNewBlock(proof: 100, previousHash: null); //genesis block
+            CreateNewBlock(nonce: 100, previousHash: null); //genesis block
         }
         #endregion
 
