@@ -37,13 +37,11 @@ namespace Blockchain.Api.Models
         public ReadOnlyCollection<Input> Inputs { get; private set; }
         public ReadOnlyCollection<Output> Outputs { get; private set; }
 
-        public bool Unspent { get; private set; }
-
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            //bytes.AddRange(Sender);
-            //bytes.AddRange(Recipient);
+            bytes.addrange(sender);
+            bytes.addrange(recipient);
             //bytes.AddRange(BitConverter.GetBytes(Amount));
             return Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
         }

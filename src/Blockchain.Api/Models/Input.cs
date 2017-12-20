@@ -10,8 +10,6 @@ namespace Blockchain.Api.Models
 
         public Output PreviousOutput { set; get; }
 
-        public long Sequence { get; private set; }
-
         public string ScriptSignature { get; private set; }
     }
 }
