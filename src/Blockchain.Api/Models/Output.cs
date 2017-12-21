@@ -22,16 +22,17 @@ namespace Blockchain.Api.Models
         public string Address { get; private set; }
 
         /// <summary>
-        /// Transaction index
+        /// Issue Amount
         /// </summary>
-        public long TxIndex { get; private set; }
-
         public decimal Value { get; private set; }
 
+        /// <summary>
+        /// Script
+        /// </summary>
         public string Script { get; private set; }
 
         /// <summary>
-        /// Do this transaction spent
+        /// Is this transaction spent
         /// </summary>
         public bool Spent { get; private set; }
     }

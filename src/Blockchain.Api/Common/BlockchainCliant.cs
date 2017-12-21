@@ -61,7 +61,7 @@ namespace Blockchain.Api.Common
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             // TODO : Genesis Block 
-            CreateNewBlock(proof: 100, previousHash: null); //genesis block
+            CreateNewBlock(nonce: 100, previousHash: null); //genesis block
         }
         #endregion
 
@@ -102,52 +102,39 @@ namespace Blockchain.Api.Common
 
         #endregion
 
+        #region public methid
+
         /// <summary>
         /// Add transaction
         /// </summary>
         /// <param name="tran">Transaction</param>
         public void AddTransaction(Transaction tran) => _transactionPool.Add(tran);
 
+        /// <summary>
+        /// Get blockchain tail
+        /// </summary>
+        /// <returns>Tail Block</returns>
         public Block GetLastBlock() => _chain.Last();
 
-        //private Block CreateNewBlock(int proof, byte[] previousHash = null)
-        //{
-        //    var block = new Block
-        //    {
-        //        Index = _chain.Count,
-        //        Timestamp = DateTime.UtcNow,
-        //        Transactions = _currentTransactions.ToList(),
-        //        PreviousHash = previousHash ?? GetHash(_chain.Last())
-        //    };
-
-        //    _currentTransactions.Clear();
-        //    _chain.Add(block);
-        //    return block;
-        //}
-
-        //private int CreateProofOfWork(int lastProof, string previousHash)
-        //{
-        //    int proof = 0;
-        //    //while (!IsValidProof(lastProof, proof, previousHash))
-        //    //    proof++;
-
-        //    return proof;
-        //}
+        #endregion
 
         #region static method
 
-        public static Block CreateNewBlock(int proof, string previousHash = null)
+        public static Block CreateNewBlock(int nonce, string previousHash = null)
         {
-            var block = new Block()
+            if (previousHash is null || BlockHelper.IsValidBlock(Instance._chain.Last(), previousHash, Instance._transactionPool, nonce, 4))
             {
-                Index = Instance._chain.Count,
-                Timestamp = DateTime.UtcNow,
-                Transactions = Instance._transactionPool.ToList(),
-                PreviousHash = previousHash ?? BlockHelper.GetHash(Instance._chain.Last())
-            };
-            Instance._transactionPool.Clear();
-            Instance._chain.Add(block);
-            return block;
+                var block = new Block(Instance._transactionPool)
+                {
+                    Index = Instance._chain.Count,
+                    Timestamp = DateTime.UtcNow,
+                    PreviousHash = previousHash ?? BlockHelper.GetHash(Instance._chain.Last())
+                };
+                Instance._transactionPool.Clear();
+                Instance._chain.Add(block);
+                return block;
+            }
+            return default(Block);
         }
         #endregion
 
