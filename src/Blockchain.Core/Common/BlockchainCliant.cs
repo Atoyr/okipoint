@@ -1,5 +1,6 @@
 ﻿using Blockchain.Core.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,9 +29,14 @@ namespace Blockchain.Core.Common
         /// </summary>
         private Block _lastBlock => _chain.Last();
         /// <summary>
+        /// UTXO Collection
+        /// </summary>
+        private ICollection _utxoTable;
+        /// <summary>
         /// This private instance
         /// </summary>
         private static BlockchainCliant _instance;
+
         #endregion
 
         #region Public Variable Property
