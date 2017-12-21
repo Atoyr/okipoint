@@ -8,10 +8,22 @@ namespace Blockchain.Api.Models
     {
         private Input() { }
 
-        public Output PreviousOutput { set; get; }
+        internal Input(Output utxo)
+        {
+            if (utxo.Spent) throw new ArgumentException(nameof(utxo));
+            PreviousOutput = utxo;
+        }
 
+        public Output PreviousOutput { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public long Sequence { get; private set; }
 
-        public string ScriptSignature { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ScriptSignature { get; private set; } = null;
     }
 }

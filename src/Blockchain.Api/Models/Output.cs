@@ -10,6 +10,12 @@ namespace Blockchain.Api.Models
     {
         private Output() { }
 
+        internal Output(string recipient,decimal value)
+        {
+            Address = recipient;
+            Value = value;
+        }
+
         /// <summary>
         /// Output virtual address
         /// </summary>
