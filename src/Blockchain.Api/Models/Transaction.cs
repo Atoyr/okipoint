@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using Blockchain.Api.Utility;
+using Blockchain.Core.Utility;
 using System.Collections.ObjectModel;
 
-namespace Blockchain.Api.Models
+namespace Blockchain.Core.Models
 {
     public class Transaction
     {

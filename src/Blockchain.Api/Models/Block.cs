@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blockchain.Api.Models
+namespace Blockchain.Core.Models
 {
     public class Block
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Blockchain.Api.Models;
+using Blockchain.Core.Models;
 
-namespace Blockchain.Api.Common
+namespace Blockchain.Core.Common
 {
     public static class TransactionHelper
     {

@@ -1,11 +1,11 @@
-﻿using Blockchain.Api.Models;
+﻿using Blockchain.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Blockchain.Api.Common
+namespace Blockchain.Core.Common
 {
     public class BlockchainCliant
     {

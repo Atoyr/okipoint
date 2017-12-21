@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Blockchain.Api.Models
+namespace Blockchain.Core.Models
 {
     public class Coin : IEquatable<Coin> ,IComparable<Coin>
     {

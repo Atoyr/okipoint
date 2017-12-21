@@ -1,11 +1,11 @@
-﻿using Blockchain.Api.Models;
-using Blockchain.Api.Utility;
+﻿using Blockchain.Core.Models;
+using Blockchain.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Blockchain.Api.Common
+namespace Blockchain.Core.Common
 {
     public static class BlockHelper
     {

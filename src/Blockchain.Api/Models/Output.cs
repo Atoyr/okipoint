@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Blockchain.Api.Models
+namespace Blockchain.Core.Models
 {
     public class Output
     {
