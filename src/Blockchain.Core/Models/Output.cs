@@ -14,7 +14,10 @@ namespace Blockchain.Core.Models
         {
             Address = recipient;
             Value = value;
+            OutputId = Guid.NewGuid().ToString().Replace("-", "");
         }
+
+        public string OutputId { get; private set; }
 
         /// <summary>
         /// Output virtual address
