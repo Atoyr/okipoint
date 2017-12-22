@@ -2,7 +2,9 @@
 using Blockchain.Core.Models;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.NonGeneric;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -32,7 +34,7 @@ namespace Blockchain.Core.Common
         /// <summary>
         /// UTXO Collection
         /// </summary>
-        private ICollection _utxoTable;
+        private ConcurrentDictionary _utxoTable;
         /// <summary>
         /// This private instance
         /// </summary>
@@ -78,8 +80,9 @@ namespace Blockchain.Core.Common
         public BlockchainCliant()
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
-            // TODO : Genesis Block 
+            _nodes = new List<Node>();//TODO
             CreateNewBlock(nonce: 100, previousHash: null); //genesis block
+            _utxoTable = new ConcurrentDictionary<string,Output>();
         }
         #endregion
 
@@ -130,7 +133,20 @@ namespace Blockchain.Core.Common
         {
             OnTransactionAdding(new TransactionEventArgs() { Transaction = tran });
             _transactionPool.Add(tran);
+            foreach (Input i in tran.Inputs)
+            {
+                _utxoTable.Remove(i.PreviousOutput.OutputId);
+            }
+            foreach (Output o in tran.Outputs)
+            {
+                _utxoTable.Add(o.OutputId,o);
+            }
             OnTransactionAdded(new TransactionEventArgs() { Transaction = tran });
+        }
+
+        public decimal GetBalance(string address)
+        {
+            return _utxoTable.Where(x => x.Address == address).Sum(x => x.Value);
         }
 
         /// <summary>
