@@ -23,6 +23,11 @@ namespace Blockchain.Core.Models
             Outputs = new ReadOnlyCollection<Output>(outputs.ToList());
         }
 
+        public bool SpendedTransactionOutput(int index,string address,string scriptSignature)
+        {
+            return false;
+        }
+
         public int Version { get; private set; }
         public string TxIndex { get; private set; }
         public string Sender { get; set; }
@@ -40,8 +45,8 @@ namespace Blockchain.Core.Models
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.addrange(sender);
-            bytes.addrange(recipient);
+            //bytes.addrange(Sender);
+            //bytes.addrange(Recipient);
             //bytes.AddRange(BitConverter.GetBytes(Amount));
             return Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
         }
