@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.NonGeneric;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -34,7 +33,7 @@ namespace Blockchain.Core.Common
         /// <summary>
         /// UTXO Collection
         /// </summary>
-        private ConcurrentDictionary _utxoTable;
+        private ConcurrentDictionary<string,Output> _utxoTable;
         /// <summary>
         /// This private instance
         /// </summary>
@@ -77,11 +76,11 @@ namespace Blockchain.Core.Common
 
 
         #region Constractor
-        public BlockchainCliant()
+        private BlockchainCliant()
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             _nodes = new List<Node>();//TODO
-            CreateNewBlock(nonce: 100, previousHash: null); //genesis block
+            //CreateNewBlock(nonce: 100, previousHash: null); //genesis block
             _utxoTable = new ConcurrentDictionary<string,Output>();
         }
         #endregion
@@ -135,18 +134,18 @@ namespace Blockchain.Core.Common
             _transactionPool.Add(tran);
             foreach (Input i in tran.Inputs)
             {
-                _utxoTable.Remove(i.PreviousOutput.OutputId);
+                _utxoTable.Remove(i.PreviousOutput.OutputId, out var o);
             }
             foreach (Output o in tran.Outputs)
             {
-                _utxoTable.Add(o.OutputId,o);
+                _utxoTable.AddOrUpdate(o.OutputId,o,(x,y) => o);
             }
             OnTransactionAdded(new TransactionEventArgs() { Transaction = tran });
         }
 
         public decimal GetBalance(string address)
         {
-            return _utxoTable.Where(x => x.Address == address).Sum(x => x.Value);
+            return _utxoTable.Where(x => x.Value.Address == address).Sum(x => x.Value.Value);
         }
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace Blockchain.Core.Common
 
         public static Block CreateNewBlock(int nonce, string previousHash = null)
         {
-            if (previousHash is null || BlockHelper.IsValidBlock(Instance._chain.Last(), previousHash, Instance._transactionPool, nonce, 4))
+            if (previousHash is null || BlockHelper.IsValidBlock(Instance._chain.Last(), previousHash, Instance._transactionPool, nonce, 0/*difficult*/))
             {
                 var block = new Block(Instance._transactionPool)
                 {

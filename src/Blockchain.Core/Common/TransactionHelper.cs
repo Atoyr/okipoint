@@ -32,5 +32,7 @@ namespace Blockchain.Core.Common
             outputs.Add(new Output(sender, temp - amount));
             return (inputs: inputs, outputs: outputs);
         }
+
+        public static Output GetOutput(string address,decimal amount) => new Output(address, amount);
     }
 }
