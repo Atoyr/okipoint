@@ -14,6 +14,16 @@ namespace Blockchain.Core.Models
             PreviousOutput = utxo;
         }
 
+        public Output PreviousOutput { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long Sequence { get; private set; }
+
+        /// <summary>
+        /// Electric Signature
+        /// </summary>
         public string ScriptSignature { get; private set; }
     }
 }
