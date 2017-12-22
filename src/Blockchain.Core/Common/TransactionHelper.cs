@@ -24,7 +24,7 @@ namespace Blockchain.Core.Common
                 if (o.Spent) throw new ArgumentException(nameof(utxos));
                 temp += o.Value;
             }
-            if(temp + commission < amount) throw new ArgumentException(nameof(utxos));
+            if(temp < amount + commission) throw new ArgumentException(nameof(utxos));
 
             ICollection<Input> inputs = utxos.Select(x => new Input(x)).ToList();
             ICollection<Output> outputs = new List<Output>();
