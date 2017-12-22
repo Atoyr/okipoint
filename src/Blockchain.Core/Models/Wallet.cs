@@ -8,6 +8,10 @@ namespace Blockchain.Core.Models
 {
     public class Wallet
     {
+        private readonly string identifier;
+        private readonly string password;
+        private readonly string secondPassword;
+
         string PublicKey { set; get; }
         string PrivateKey { set; get; }
     }
