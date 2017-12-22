@@ -1,4 +1,5 @@
-﻿using Blockchain.Core.Models;
+﻿using Blockchain.Core.Events;
+using Blockchain.Core.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,6 +63,17 @@ namespace Blockchain.Core.Common
 
         #endregion
 
+        #region Event
+
+        public event EventHandler<TransactionEventArgs> TransactionAdding;
+        public event EventHandler<TransactionEventArgs> TransactionAdded;
+
+        protected virtual void OnTransactionAdding(TransactionEventArgs e) => TransactionAdding?.Invoke(this,e);
+        protected virtual void OnTransactionAdded(TransactionEventArgs e) => TransactionAdded?.Invoke(this, e);
+
+        #endregion
+
+
         #region Constractor
         public BlockchainCliant()
         {
@@ -114,7 +126,12 @@ namespace Blockchain.Core.Common
         /// Add transaction
         /// </summary>
         /// <param name="tran">Transaction</param>
-        public void AddTransaction(Transaction tran) => _transactionPool.Add(tran);
+        public void AddTransaction(Transaction tran)
+        {
+            OnTransactionAdding(new TransactionEventArgs() { Transaction = tran });
+            _transactionPool.Add(tran);
+            OnTransactionAdded(new TransactionEventArgs() { Transaction = tran });
+        }
 
         /// <summary>
         /// Get blockchain tail
