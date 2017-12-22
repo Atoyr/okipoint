@@ -8,7 +8,7 @@ namespace Blockchain.Core.Models
 {
     public class Wallet
     {
-        byte[] PublicKey { set; get; }
-        byte[] PrivateKey { set; get; }
+        string PublicKey { set; get; }
+        string PrivateKey { set; get; }
     }
 }
