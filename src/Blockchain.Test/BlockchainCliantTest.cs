@@ -20,14 +20,26 @@ namespace Blockchain.Test
 
             var initOutput = new List<Output>();
             initOutput.Add(TransactionHelper.GetOutput(address1, 100));
+            foreach(Output o in initOutput)
+            {
+                bcc.AddUtxo(o);
+            }
+
             var io = TransactionHelper.CreateIO(initOutput, address1, address2, 30, 0);
             var tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
+
 
             bcc.AddTransaction(tran);
             System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
             System.Diagnostics.Trace.WriteLine($"Address2 Balance {bcc.GetBalance(address2)}");
 
-            io = TransactionHelper.CreateIO(initOutput, address1, address2, 20, 0);
+            io = TransactionHelper.CreateIO(tran.Outputs, address1, address2, 20, 0);
+            tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
+            bcc.AddTransaction(tran);
+            System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
+            System.Diagnostics.Trace.WriteLine($"Address2 Balance {bcc.GetBalance(address2)}");
+
+            io = TransactionHelper.CreateIO(tran.Outputs, address2, address1, 50, 0);
             tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
             bcc.AddTransaction(tran);
             System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
@@ -35,10 +47,14 @@ namespace Blockchain.Test
 
             io = TransactionHelper.CreateIO(initOutput, address2, address1, 50, 0);
             tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
-            bcc.AddTransaction(tran);
-            System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
-            System.Diagnostics.Trace.WriteLine($"Address2 Balance {bcc.GetBalance(address2)}");
-
+            try
+            {
+                bcc.AddTransaction(tran);
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Trace.WriteLine($"Exception {e.Message}");
+            }
         }
     }
 }

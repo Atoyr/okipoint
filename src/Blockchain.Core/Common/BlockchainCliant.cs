@@ -74,7 +74,6 @@ namespace Blockchain.Core.Common
 
         #endregion
 
-
         #region Constractor
         private BlockchainCliant()
         {
@@ -125,21 +124,33 @@ namespace Blockchain.Core.Common
         #region public methid
 
         /// <summary>
+        /// test method
+        /// </summary>
+        /// <param name="o"></param>
+        public void AddUtxo(Output o)
+        {
+            _utxoTable.AddOrUpdate(o.OutputId,o,(x,y) => o);
+        }
+
+        /// <summary>
         /// Add transaction
         /// </summary>
         /// <param name="tran">Transaction</param>
         public void AddTransaction(Transaction tran)
         {
             OnTransactionAdding(new TransactionEventArgs() { Transaction = tran });
-            _transactionPool.Add(tran);
             foreach (Input i in tran.Inputs)
             {
-                _utxoTable.Remove(i.PreviousOutput.OutputId, out var o);
+                if(!_utxoTable.Remove(i.PreviousOutput.OutputId, out var o))
+                {
+                    throw new ArgumentException(nameof(tran));
+                }
             }
             foreach (Output o in tran.Outputs)
             {
                 _utxoTable.AddOrUpdate(o.OutputId,o,(x,y) => o);
             }
+            _transactionPool.Add(tran);
             OnTransactionAdded(new TransactionEventArgs() { Transaction = tran });
         }
 
