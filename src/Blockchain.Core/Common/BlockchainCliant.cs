@@ -185,6 +185,21 @@ namespace Blockchain.Core.Common
             }
             return default(Block);
         }
+
+        public static int Mining()
+        {
+            int nonce = 0;
+            while (!BlockHelper.IsValidBlock(
+                        Instance._chain.Last(), 
+                        BlockHelper.GetHash(Instance._chain.Last()),
+                        Instance._transactionPool,
+                        nonce,
+                        1 /*difficult*/))
+            {
+                ++nonce;
+            }
+            return nonce;
+        }
         #endregion
 
         ////web server calls

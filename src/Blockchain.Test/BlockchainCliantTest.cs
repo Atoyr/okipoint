@@ -28,7 +28,6 @@ namespace Blockchain.Test
             var io = TransactionHelper.CreateIO(initOutput, address1, address2, 30, 0);
             var tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
 
-
             bcc.AddTransaction(tran);
             System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
             System.Diagnostics.Trace.WriteLine($"Address2 Balance {bcc.GetBalance(address2)}");
