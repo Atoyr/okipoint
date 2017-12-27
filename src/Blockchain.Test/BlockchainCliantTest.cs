@@ -18,14 +18,9 @@ namespace Blockchain.Test
             var address1 = Guid.NewGuid().ToString().Replace("-", "");
             var address2 = Guid.NewGuid().ToString().Replace("-", "");
 
-            var initOutput = new List<Output>();
-            initOutput.Add(TransactionHelper.GetOutput(address1, 100));
-            foreach(Output o in initOutput)
-            {
-                bcc.AddUtxo(o);
-            }
+            bcc.GenesisBlock(address1);
 
-            var io = TransactionHelper.CreateIO(initOutput, address1, address2, 30, 0);
+            var io = TransactionHelper.CreateIO(bcc.GetUtxo(address1), address1, address2, 30, 0);
             var tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
 
             bcc.AddTransaction(tran);
@@ -44,16 +39,7 @@ namespace Blockchain.Test
             System.Diagnostics.Trace.WriteLine($"Address1 Balance {bcc.GetBalance(address1)}");
             System.Diagnostics.Trace.WriteLine($"Address2 Balance {bcc.GetBalance(address2)}");
 
-            io = TransactionHelper.CreateIO(initOutput, address2, address1, 50, 0);
-            tran = TransactionHelper.CreateTransaction(io.inputs, io.outputs);
-            try
-            {
-                bcc.AddTransaction(tran);
-            }
-            catch(Exception e)
-            {
-                System.Diagnostics.Trace.WriteLine($"Exception {e.Message}");
-            }
+            //BlockchainCliant.CreateNewBlock(0,BlockHelper.GetHash(bcc.GetLastBlock()));
         }
     }
 }
