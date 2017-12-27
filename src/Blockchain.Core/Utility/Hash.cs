@@ -18,7 +18,7 @@ namespace Blockchain.Core.Utility
         /// <param name="target">ハッシュ変換元</param>
         /// <param name="hashAlgorithm">ハッシュアルゴリズム Nullの場合、Tの既定ハッシュアルゴリズムを使用</param>
         /// <returns></returns>
-        public static byte[] GetHash<T>(byte[] target,T hashAlgorithm = null) where T : HashAlgorithm, new()
+        public static byte[] GetHashToByte<T>(byte[] target,T hashAlgorithm = null) where T : HashAlgorithm, new()
         {
             if (hashAlgorithm == null)
             {
@@ -30,6 +30,72 @@ namespace Blockchain.Core.Utility
             else
             {
                 return hashAlgorithm.ComputeHash(target);
+            }
+        }
+
+        /// <summary>
+        /// ハッシュを計算する
+        /// </summary>
+        /// <typeparam name="T">HashAlgorihm</typeparam>
+        /// <param name="target">ハッシュ変換元</param>
+        /// <param name="hashAlgorithm">ハッシュアルゴリズム Nullの場合、Tの既定ハッシュアルゴリズムを使用</param>
+        /// <returns></returns>
+        public static byte[] GetHashToByte<T>(string target, T hashAlgorithm = null) where T : HashAlgorithm, new()
+        {
+            if (hashAlgorithm == null)
+            {
+                using (var hashProvider = new T())
+                {
+                    return hashProvider.ComputeHash(Encoding.ASCII.GetBytes(target));
+                }
+            }
+            else
+            {
+                return hashAlgorithm.ComputeHash(Encoding.ASCII.GetBytes(target));
+            }
+        }
+
+        /// <summary>
+        /// ハッシュを計算する
+        /// </summary>
+        /// <typeparam name="T">HashAlgorihm</typeparam>
+        /// <param name="target">ハッシュ変換元</param>
+        /// <param name="hashAlgorithm">ハッシュアルゴリズム Nullの場合、Tの既定ハッシュアルゴリズムを使用</param>
+        /// <returns></returns>
+        public static string GetHashToString<T>(byte[] target, T hashAlgorithm = null) where T : HashAlgorithm, new()
+        {
+            if (hashAlgorithm == null)
+            {
+                using (var hashProvider = new T())
+                {
+                    return Encoding.ASCII.GetString(hashProvider.ComputeHash(target));
+                }
+            }
+            else
+            {
+                return Encoding.ASCII.GetString(hashAlgorithm.ComputeHash(target));
+            }
+        }
+
+        /// <summary>
+        /// ハッシュを計算する
+        /// </summary>
+        /// <typeparam name="T">HashAlgorihm</typeparam>
+        /// <param name="target">ハッシュ変換元</param>
+        /// <param name="hashAlgorithm">ハッシュアルゴリズム Nullの場合、Tの既定ハッシュアルゴリズムを使用</param>
+        /// <returns></returns>
+        public static string GetHashToString<T>(string target, T hashAlgorithm = null) where T : HashAlgorithm, new()
+        {
+            if (hashAlgorithm == null)
+            {
+                using (var hashProvider = new T())
+                {
+                    return Encoding.ASCII.GetString(hashProvider.ComputeHash(Encoding.ASCII.GetBytes(target)));
+                }
+            }
+            else
+            {
+                return Encoding.ASCII.GetString(hashAlgorithm.ComputeHash(Encoding.ASCII.GetBytes(target)));
             }
         }
 

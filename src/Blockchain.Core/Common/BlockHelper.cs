@@ -21,7 +21,7 @@ namespace Blockchain.Core.Common
                 bytes.AddRange(t.ToBytes());
             }
             bytes.AddRange(BitConverter.GetBytes(nonce));
-            return Encoding.ASCII.GetString(Hash.GetHash<SHA256Managed>(bytes.ToArray()));
+            return Encoding.ASCII.GetString(Hash.GetHashToByte<SHA256Managed>(bytes.ToArray()));
         }
 
 

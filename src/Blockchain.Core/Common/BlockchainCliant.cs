@@ -1,11 +1,13 @@
 ﻿using Blockchain.Core.Events;
 using Blockchain.Core.Models;
+using Blockchain.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Blockchain.Core.Common
@@ -79,7 +81,7 @@ namespace Blockchain.Core.Common
         {
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             _nodes = new List<Node>();//TODO
-            //CreateNewBlock(nonce: 100, previousHash: null); //genesis block
+            // TODO ブロックデータの読み込み
             _utxoTable = new ConcurrentDictionary<string,Output>();
         }
         #endregion
@@ -124,12 +126,29 @@ namespace Blockchain.Core.Common
         #region public methid
 
         /// <summary>
-        /// test method
+        /// Create Genesis Block
         /// </summary>
-        /// <param name="o"></param>
-        public void AddUtxo(Output o)
+        /// <param name="address"></param>
+        public void GenesisBlock(string address, decimal amount = 100)
         {
-            _utxoTable.AddOrUpdate(o.OutputId,o,(x,y) => o);
+            // すでにトランザクションが存在する場合はエラー
+            if ((_chain?.Count ?? 0) != 0 || (_transactionPool?.Count ?? 0) != 0) throw new Exception();
+            var output = new Output(address, amount);
+            var input = new Input(output);
+            _utxoTable.AddOrUpdate(output.OutputId, output, (x,y) => output);
+            var outputs = new List<Output>();
+            var inputs = new List<Input>();
+            outputs.Add(output);
+            inputs.Add(input);
+            _transactionPool.Add(TransactionHelper.CreateTransaction(inputs, outputs));
+
+            var block = new Block(Instance._transactionPool)
+            {
+                Index = Instance._chain.Count,
+                Timestamp = DateTime.UtcNow,
+                Difficult = 0,
+                PreviousHash = Hash.GetHashToString<SHA256Managed>(NodeId)                
+            };
         }
 
         /// <summary>
@@ -157,6 +176,11 @@ namespace Blockchain.Core.Common
         public decimal GetBalance(string address)
         {
             return _utxoTable.Where(x => x.Value.Address == address).Sum(x => x.Value.Value);
+        }
+
+        public IList<Output> GetUtxo(string address)
+        {
+            return _utxoTable.Where(x => x.Value.Address == address).Select(x => x.Value).ToList<Output>();
         }
 
         /// <summary>

@@ -48,7 +48,7 @@ namespace Blockchain.Core.Models
             //bytes.addrange(Sender);
             //bytes.addrange(Recipient);
             //bytes.AddRange(BitConverter.GetBytes(Amount));
-            return Hash.GetHash<HMACSHA256>(bytes.ToArray()); 
+            return Hash.GetHashToByte<HMACSHA256>(bytes.ToArray()); 
         }
     }
 }
